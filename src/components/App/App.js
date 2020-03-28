@@ -3,6 +3,7 @@ import React from 'react';
 import StyledApp from './App.styled.js';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Helmet from 'react-helmet';
+import Home from '../Home.js';
 
 function App() {
   return (
@@ -20,10 +21,6 @@ function App() {
       </Router>
     </StyledApp>
   );
-}
-
-function Home() {
-  return <h1>Home</h1>;
 }
 
 export default App;
