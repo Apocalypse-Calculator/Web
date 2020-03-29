@@ -1,23 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { calculate } from '../../Api/apiUtil';
 import CalculateButton from '../Calculator/calculateButton';
 
+const useInput = initialValue => {
+  const [value, setValue] = useState(initialValue);
+  return [
+    value,
+    <input value={value} onChange={event => { setValue(event.target.value); }} />,
+  ];
+}
 
-export default function Inputs({ item, onSubmit, goHome }) {
+export default function Inputs({ onSubmit }) {
+  const [daysLeft, daysInput] = useInput(0);
+  const [currentAmount, amountInput] = useInput(0);
+  const [numPeople, numPeopleInput] = useInput(0);
+
+  const onClick = () => calculate({
+    daysLeft,
+    currentAmount,
+    numPeople
+  }).then(results => { onSubmit(results); });
+
   return (
     <div>
-      <h1>{item}</h1>
-      <input />
+      <p>
+        Days left: {daysInput}
+      </p>
+      <p>
+        Current count: {amountInput}
+      </p>
+      <p>
+        Number of  People: {numPeopleInput}
+      </p>
+      <CalculateButton onClick={onClick}/>
       <br />
-      <CalculateButton onClick={onSubmit}/>
-      <br />
-      <button onClick={goHome}>back</button>
     </div>
   )
 }
 
 Inputs.propTypes = {
-  item: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  goHome: PropTypes.func.isRequired,
 };

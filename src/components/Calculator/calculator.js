@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Items from './items/itemsIndex';
-import CalculateButton from './calculateButton';
 import Inputs from '../Inputs/inputs';
 import Results from './result';
+import PageWrapper from '../calculatorPageWrapper';
 
 // pages
 const [HOME, INPUT, RESULTS] = ['HOME', 'INPUT', 'RESULTS'];
@@ -11,36 +10,44 @@ const [HOME, INPUT, RESULTS] = ['HOME', 'INPUT', 'RESULTS'];
 export default function Calculator() {
   const [page, setPage] = useState(HOME);
 
-  const [selectedItem, setItem] = useState('');
-  useEffect(() => {
-    if (selectedItem) {
-      setPage(INPUT);
+  const usePageEffect = (stateSlice, page) => useEffect(() => {
+    if (stateSlice) {
+      setPage(page);
     }
-  }, [selectedItem])
+  }, [stateSlice]);
 
-  const [results, setResults] = useState('');
-  useEffect(() => {
-    if (results) {
-      setPage(RESULTS);
-    }
-  }, [results])
+  const [selectedItem, setItem] = useState('');
+  usePageEffect(selectedItem, INPUT);
+
+  const [results, setResults] = useState(null);
+  usePageEffect(results, RESULTS);
 
   const goHome = () => {
     setPage(HOME);
-    setResults('');
+    setResults(null);
     setItem('');
   };
 
-
+  const pageProps = { selectedItem, goHome };
   const pageMap = {
-    [HOME]: <Items goHome={goHome} onClick={item => { setItem(item); }} />,
-    [INPUT]: <Inputs item={selectedItem} goHome={goHome} onSubmit={setResults} />,
-    [RESULTS]: <Results item={selectedItem} results={results} goHome={goHome} />,
+    [HOME]: () => <Items goHome={goHome} onClick={item => { setItem(item); }} />,
+    [INPUT]: () => (
+      <PageWrapper {...pageProps}>
+        <Inputs onSubmit={setResults} />
+      </PageWrapper>
+    ),
+    [RESULTS]: () => (
+      <PageWrapper {...pageProps}>
+        <Results results={results} goBack={() => setPage(INPUT)}/>
+      </PageWrapper>
+    ),
   }
 
+  const Page = pageMap[page]
+
   return (
-    <div className='calculator'>
-      {pageMap[page]}
+    <div>
+      <Page />
     </div>
   );
 }
