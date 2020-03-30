@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { calculate } from '../../Api/apiUtil';
-import CalculateButton from '../Calculator/calculateButton';
+import { calculate } from '../../api/apiUtil';
+import CalculateButton from '../calculator/calculateButton';
 
 const useInput = initialValue => {
   const [value, setValue] = useState(initialValue);

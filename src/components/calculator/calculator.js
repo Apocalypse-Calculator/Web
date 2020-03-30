@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Items from './items/itemsIndex';
-import Inputs from '../Inputs/inputs';
+import Inputs from '../inputs/inputs';
 import Results from './result';
 import PageWrapper from '../calculatorPageWrapper';
 
