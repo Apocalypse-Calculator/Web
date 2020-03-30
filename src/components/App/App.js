@@ -3,7 +3,7 @@ import React from 'react';
 import StyledApp from './App.styled.js';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Helmet from 'react-helmet';
-import Home from '../Home.js';
+import Home from '../home.js';
 
 function App() {
   return (
